@@ -4,4 +4,6 @@ export interface VideoObj {
   subtitle: string;
   thumb: string;
   title: string;
+  ref: any;
+  duration : number;
 }
