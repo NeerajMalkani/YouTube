@@ -354,6 +354,9 @@ export const Styles = StyleSheet.create({
   /* #endregion */
 
   /* #region Margin */
+  marginTopMinus2: {
+    marginTop: -2,
+  },
   margin0: {
     margin: 0,
   },
@@ -642,7 +645,6 @@ export const Styles = StyleSheet.create({
   flexJustifyEnd: {
     justifyContent: 'flex-end',
   },
-
   flexAlignSelfStart: {
     alignSelf: 'flex-start',
   },
@@ -721,11 +723,17 @@ export const Styles = StyleSheet.create({
   width16: {
     width: 16,
   },
+  width20: {
+    width: 20,
+  },
   width24: {
     width: 24,
   },
   width32: {
     width: 32,
+  },
+  width36: {
+    width: 36,
   },
   width40: {
     width: 40,
@@ -803,8 +811,14 @@ export const Styles = StyleSheet.create({
   height16: {
     height: 16,
   },
+  height20: {
+    height: 20,
+  },
   height24: {
     height: 24,
+  },
+  height36: {
+    height: 36,
   },
   height32: {
     height: 32,
@@ -929,6 +943,9 @@ export const Styles = StyleSheet.create({
   /*#endregion*/
 
   /*#region zIndex */
+  zIndexMinus1: {
+    zIndex: -1,
+  },
   zIndex1: {
     zIndex: 1,
   },
@@ -986,8 +1003,26 @@ export const Styles = StyleSheet.create({
   top0: {
     top: 0,
   },
+  right0: {
+    right: 0,
+  },
+  left0: {
+    left: 0,
+  },
   bottom0: {
     bottom: 0,
+  },
+  right16: {
+    right: 16,
+  },
+  bottom64: {
+    bottom: 64,
+  },
+  bottom72: {
+    bottom: 72,
+  },
+  bottom88: {
+    bottom: 88,
   },
   bottom120: {
     bottom: 120,
@@ -1011,4 +1046,10 @@ export const Styles = StyleSheet.create({
     elevation: 5,
   },
   /*#endregion */
+
+  textShadow: {
+    textShadowColor: 'rgba(0, 0, 0, 0.90)',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 10,
+  },
 });

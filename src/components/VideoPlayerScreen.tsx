@@ -1,8 +1,10 @@
-import React, {useState} from 'react';
-import {View, Platform, Image, TouchableNativeFeedback} from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
+import {View, Image, TouchableNativeFeedback} from 'react-native';
+import * as Animatable from 'react-native-animatable';
 import Video from 'react-native-video';
 import {Styles} from '../styles/Styles';
 import Slider from 'react-native-slider';
+import {Text} from 'react-native-paper';
 
 interface VideoPlayerProps {
   videoURL: string;
@@ -18,6 +20,8 @@ const VideoPlayerScreen = ({videoURL, videoThumb, videoRef, colors}: VideoPlayer
 
   const [currentTime, setCurrentTime] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+
+  const viewAnimation = useRef<Animatable.View & View>(null);
 
   const onSeek = (seek: number) => {
     videoRef.current?.seek(seek);
@@ -44,17 +48,65 @@ const VideoPlayerScreen = ({videoURL, videoThumb, videoRef, colors}: VideoPlayer
     setCurrentTime(duration);
   };
 
+  useEffect(() => {
+    const Animation = () => {
+      if (paused) {
+        if (viewAnimation && viewAnimation.current && viewAnimation.current.bounceIn) {
+          viewAnimation.current.bounceIn(350);
+          setTimeout(() => {
+            if (viewAnimation && viewAnimation.current && viewAnimation.current.bounceOut) {
+              viewAnimation.current.bounceOut(350);
+            }
+          }, 800);
+        }
+      } else {
+        if (viewAnimation && viewAnimation.current && viewAnimation.current.bounceIn) {
+          viewAnimation.current.bounceIn(350);
+          setTimeout(() => {
+            if (viewAnimation && viewAnimation.current && viewAnimation.current.bounceOut) {
+              viewAnimation.current.bounceOut(350);
+            }
+          }, 800);
+        }
+      }
+    };
+
+    Animation();
+  }, [paused, viewAnimation]);
+
   return (
     <TouchableNativeFeedback onPress={onPaused}>
-      <View style={[Styles.flex1, Styles.height100per, Styles.width100per]}>
-        <View style={[Styles.positionAbsolute, Styles.width32, Styles.height64, {right: 16, zIndex: 1, bottom: 72}]}>
-          <Image source={require('../../assets/like.png')} style={[Styles.width32, Styles.height32]} />
-          <Image source={require('../../assets/dislike.png')} style={[Styles.width32, Styles.height32, Styles.marginTop16]} />
+      <View style={[Styles.flex1, Styles.height100per, Styles.width100per, Styles.flexJustifyCenter]}>
+        <Animatable.View ref={viewAnimation} style={[Styles.width64, Styles.height64, Styles.borderRadius32, Styles.positionAbsolute, Styles.flexAlignCenter, Styles.flexAlignSelfCenter, Styles.flexJustifyCenter, Styles.zIndex2, {backgroundColor: 'rgba(0, 0, 0, 0.5)'}]}>
+          <Image source={!paused ? require('../../assets/play.png') : require('../../assets/pause.png')} style={[Styles.width20, Styles.height20]} />
+        </Animatable.View>
+        <View style={[Styles.positionAbsolute, Styles.width48, Styles.flexAlignCenter, Styles.flexJustifyCenter, Styles.zIndex1, Styles.right16, Styles.bottom64]}>
+          <Image source={require('../../assets/like.png')} style={[Styles.width36, Styles.height36, Styles.marginStart8]} />
+          <Text variant="bodySmall" style={[Styles.marginTop0, Styles.textShadow, {color: colors.onTertiary}]}>
+            Like
+          </Text>
+          <Image source={require('../../assets/like.png')} style={[Styles.width36, Styles.height36, Styles.marginEnd8, Styles.marginTop16, {transform: [{rotateZ: '180deg'}]}]} />
+          <Text variant="bodySmall" style={[Styles.marginTop4, Styles.textShadow, {color: colors.onTertiary}]}>
+            Dislike
+          </Text>
+          <Image source={require('../../assets/comment.png')} style={[Styles.width36, Styles.height36, Styles.marginStart8, Styles.marginTop24]} />
+          <Text variant="bodySmall" style={[Styles.textShadow, Styles.marginTopMinus2, {color: colors.onTertiary}]}>
+            1.4K
+          </Text>
+          <Image source={require('../../assets/share.png')} style={[Styles.width36, Styles.height36, Styles.marginStart8, Styles.marginTop24]} />
+          <Text variant="bodySmall" style={[Styles.textShadow, Styles.marginTopMinus2, {color: colors.onTertiary}]}>
+            Share
+          </Text>
+          <Image source={require('../../assets/remix.png')} style={[Styles.width36, Styles.height36, Styles.marginStart8, Styles.marginTop24]} />
+          <Text variant="bodySmall" style={[Styles.textShadow, Styles.marginTopMinus2, {color: colors.onTertiary}]}>
+            Remix
+          </Text>
+          <Image source={{uri: videoThumb}} style={[Styles.width40, Styles.height40, Styles.borderRadius8, Styles.marginTop24]} />
         </View>
-        <Image source={{uri: videoThumb}} resizeMode="contain" blurRadius={2} style={[{position: 'absolute', zIndex: -1, top: 0, left: 0, bottom: 0, right: 0}]} />
+        <Image source={{uri: videoThumb}} resizeMode="contain" blurRadius={2} style={[Styles.positionAbsolute, Styles.zIndexMinus1, Styles.top0, Styles.bottom0, Styles.left0, Styles.right0]} />
         <Video onEnd={onEnd} onLoad={onLoad} onLoadStart={onLoadStart} posterResizeMode={'contain'} poster={videoThumb} repeat={true} onProgress={onProgress} paused={paused} ref={videoRef} resizeMode={'contain'} source={{uri: videoURL}} style={[Styles.width100per, Styles.height100per]} />
         <View style={[Styles.height72, Styles.width100per, Styles.positionAbsolute, Styles.bottom0, Styles.flexJustifyStart]}>
-          <Slider animateTransitions={true} step={0.01} minimumValue={0} maximumValue={duration} minimumTrackTintColor={colors.primary} thumbTintColor={colors.primary} maximumTrackTintColor="#dedede" value={currentTime} onValueChange={onSeek} trackStyle={{height: 2}} />
+          <Slider animateTransitions={true} step={0.01} minimumValue={0} maximumValue={duration} minimumTrackTintColor={colors.primary} thumbTintColor={colors.primary} maximumTrackTintColor="#828282" value={currentTime} onValueChange={onSeek} trackStyle={[Styles.height2]} />
         </View>
       </View>
     </TouchableNativeFeedback>

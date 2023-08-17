@@ -5,5 +5,4 @@ export interface VideoObj {
   thumb: string;
   title: string;
   ref: any;
-  duration : number;
 }
