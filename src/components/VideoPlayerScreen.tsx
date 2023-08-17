@@ -106,7 +106,7 @@ const VideoPlayerScreen = ({videoURL, videoThumb, videoRef, colors}: VideoPlayer
         <Image source={{uri: videoThumb}} resizeMode="contain" blurRadius={2} style={[Styles.positionAbsolute, Styles.zIndexMinus1, Styles.top0, Styles.bottom0, Styles.left0, Styles.right0]} />
         <Video onEnd={onEnd} onLoad={onLoad} onLoadStart={onLoadStart} posterResizeMode={'contain'} poster={videoThumb} repeat={true} onProgress={onProgress} paused={paused} ref={videoRef} resizeMode={'contain'} source={{uri: videoURL}} style={[Styles.width100per, Styles.height100per]} />
         <View style={[Styles.height72, Styles.width100per, Styles.positionAbsolute, Styles.bottom0, Styles.flexJustifyStart]}>
-          <Slider animateTransitions={true} step={0.01} minimumValue={0} maximumValue={duration} minimumTrackTintColor={colors.primary} thumbTintColor={colors.primary} maximumTrackTintColor="#828282" value={currentTime} onValueChange={onSeek} trackStyle={[Styles.height2]} />
+          <Slider animateTransitions={true} step={0.01} minimumValue={0} maximumValue={duration} thumbTouchSize={{width: 24, height: 24}} thumbStyle={{width: 14, height: 14}} minimumTrackTintColor={colors.primary} thumbTintColor={colors.primary} maximumTrackTintColor="#828282" value={currentTime} onValueChange={onSeek} trackStyle={[Styles.height2]} />
         </View>
       </View>
     </TouchableNativeFeedback>
