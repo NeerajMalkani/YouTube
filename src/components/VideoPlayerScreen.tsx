@@ -76,11 +76,11 @@ const VideoPlayerScreen = ({videoURL, videoThumb, videoRef, colors}: VideoPlayer
 
   return (
     <TouchableNativeFeedback onPress={onPaused}>
-      <View style={[Styles.flex1, Styles.height100per, Styles.width100per, Styles.flexJustifyCenter]}>
+      <View style={[Styles.flex1, Styles.width100per, Styles.flexJustifyCenter]}>
         <Animatable.View ref={viewAnimation} style={[Styles.width64, Styles.height64, Styles.borderRadius32, Styles.positionAbsolute, Styles.flexAlignCenter, Styles.flexAlignSelfCenter, Styles.flexJustifyCenter, Styles.zIndex2, {backgroundColor: 'rgba(0, 0, 0, 0.5)'}]}>
           <Image source={!paused ? require('../../assets/play.png') : require('../../assets/pause.png')} style={[Styles.width20, Styles.height20]} />
         </Animatable.View>
-        <View style={[Styles.positionAbsolute, Styles.width48, Styles.flexAlignCenter, Styles.flexJustifyCenter, Styles.zIndex1, Styles.right16, Styles.bottom64]}>
+        <View style={[Styles.positionAbsolute, Styles.width48, Styles.flexAlignCenter, Styles.flexJustifyCenter, Styles.zIndex1, Styles.right16, {bottom: 72}]}>
           <Image source={require('../../assets/like.png')} style={[Styles.width36, Styles.height36, Styles.marginStart8]} />
           <Text variant="bodySmall" style={[Styles.marginTop0, Styles.textShadow, {color: colors.onTertiary}]}>
             Like
@@ -105,7 +105,7 @@ const VideoPlayerScreen = ({videoURL, videoThumb, videoRef, colors}: VideoPlayer
         </View>
         <Image source={{uri: videoThumb}} resizeMode="contain" blurRadius={2} style={[Styles.positionAbsolute, Styles.zIndexMinus1, Styles.top0, Styles.bottom0, Styles.left0, Styles.right0]} />
         <Video onEnd={onEnd} onLoad={onLoad} onLoadStart={onLoadStart} posterResizeMode={'contain'} poster={videoThumb} repeat={true} onProgress={onProgress} paused={paused} ref={videoRef} resizeMode={'contain'} source={{uri: videoURL}} style={[Styles.width100per, Styles.height100per]} />
-        <View style={[Styles.height72, Styles.width100per, Styles.positionAbsolute, Styles.bottom0, Styles.flexJustifyStart]}>
+        <View style={[Styles.height2, Styles.width100per, Styles.positionAbsolute, Styles.flexJustifyStart, {bottom: 68, zIndex: 2}]}>
           <Slider animateTransitions={true} step={0.01} minimumValue={0} maximumValue={duration} thumbTouchSize={{width: 24, height: 24}} thumbStyle={{width: 14, height: 14}} minimumTrackTintColor={colors.primary} thumbTintColor={colors.primary} maximumTrackTintColor="#828282" value={currentTime} onValueChange={onSeek} trackStyle={[Styles.height2]} />
         </View>
       </View>
