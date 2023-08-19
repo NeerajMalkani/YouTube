@@ -9,8 +9,6 @@ import {StackProps} from '../models/StackProps';
 import {VideoObj} from '../models/Video';
 import VideoPlayerScreen from '../components/VideoPlayerScreen';
 
-
-
 export const navigationRef = createNavigationContainerRef();
 const ExploreScreen = ({theme}: StackProps) => {
   const colors: any = theme.colors;

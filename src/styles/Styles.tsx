@@ -729,6 +729,9 @@ export const Styles = StyleSheet.create({
   width24: {
     width: 24,
   },
+  width28: {
+    width: 28,
+  },
   width32: {
     width: 32,
   },

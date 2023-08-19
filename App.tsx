@@ -1,6 +1,5 @@
 import React from 'react';
-import {SafeAreaView, StatusBar, useColorScheme} from 'react-native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {Image, SafeAreaView, useColorScheme} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,7 +9,6 @@ import {darkTheme, lightTheme} from './src/theme/AppTheme';
 import ExploreScreen, {navigationRef} from './src/screens/ExploreScreen';
 import {Styles} from './src/styles/Styles';
 
-const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 export default function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -18,13 +16,10 @@ export default function App() {
     <SafeAreaView style={[Styles.flex1]}>
       <PaperProvider theme={isDarkMode ? darkTheme : lightTheme}>
         <NavigationContainer ref={navigationRef}>
-          {/* <Stack.Navigator initialRouteName="ExploreScreen">
-            <Stack.Screen name="ExploreScreen" component={ExploreScreen} options={{headerShown: false}} />
-          </Stack.Navigator> */}
           <Tab.Navigator
             initialRouteName="ExploreScreen"
             screenOptions={{
-              tabBarStyle: {backgroundColor: 'transparent', position: 'absolute'},
+              tabBarStyle: {backgroundColor: 'transparent', position: 'absolute', height: 56, paddingBottom: 8},
               tabBarInactiveTintColor: lightTheme.colors.onPrimary,
               tabBarActiveTintColor: lightTheme.colors.onPrimary,
             }}>
@@ -34,7 +29,8 @@ export default function App() {
               options={{
                 headerShown: false,
                 tabBarLabel: 'Home',
-                tabBarIcon: ({color, size}) => <MaterialCommunityIcons name="home-outline" color={color} size={size} />,
+                // eslint-disable-next-line react/no-unstable-nested-components
+                tabBarIcon: () => <Image source={require('./assets/home.png')} style={[Styles.width20, Styles.height20]} />,
               }}
               listeners={() => ({
                 tabPress: e => {
@@ -48,6 +44,7 @@ export default function App() {
               options={{
                 headerShown: false,
                 tabBarLabel: 'Shorts',
+                // eslint-disable-next-line react/no-unstable-nested-components
                 tabBarIcon: ({color, size}) => <MaterialCommunityIcons name="lightning-bolt" color={color} size={size} />,
               }}
             />
@@ -58,7 +55,8 @@ export default function App() {
                 headerShown: false,
                 tabBarLabel: '',
                 tabBarLabelPosition: 'beside-icon',
-                tabBarIcon: ({color, size}) => <MaterialCommunityIcons name="plus-circle-outline" color={color} size={size} />,
+                // eslint-disable-next-line react/no-unstable-nested-components
+                tabBarIcon: () => <Image source={require('./assets/plus.png')} style={[Styles.width32, Styles.height32, Styles.marginTop16]} />,
               }}
               listeners={() => ({
                 tabPress: e => {
@@ -72,7 +70,8 @@ export default function App() {
               options={{
                 headerShown: false,
                 tabBarLabel: 'Subscription',
-                tabBarIcon: ({color, size}) => <MaterialCommunityIcons name="youtube-subscription" color={color} size={size} />,
+                // eslint-disable-next-line react/no-unstable-nested-components
+                tabBarIcon: () => <Image source={require('./assets/playlist.png')} style={[Styles.width20, Styles.height20]} />,
               }}
               listeners={() => ({
                 tabPress: e => {
@@ -86,7 +85,8 @@ export default function App() {
               options={{
                 headerShown: false,
                 tabBarLabel: 'Library',
-                tabBarIcon: ({color, size}) => <MaterialIcons name="video-collection" color={color} size={size} />,
+                // eslint-disable-next-line react/no-unstable-nested-components
+                tabBarIcon: () => <Image source={require('./assets/video-library.png')} style={[Styles.width24, Styles.height24]} />,
               }}
               listeners={() => ({
                 tabPress: e => {

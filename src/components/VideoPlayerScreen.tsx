@@ -27,9 +27,7 @@ const VideoPlayerScreen = ({videoURL, videoThumb, videoRef, colors}: VideoPlayer
     videoRef.current?.seek(seek);
   };
 
-  const onPaused = () => {
-    setPaused(!paused);
-  };
+  const onPaused = () => setPaused(!paused);
 
   const onProgress = (data: any) => {
     if (!isLoading) {
@@ -44,9 +42,7 @@ const VideoPlayerScreen = ({videoURL, videoThumb, videoRef, colors}: VideoPlayer
 
   const onLoadStart = () => setIsLoading(true);
 
-  const onEnd = () => {
-    setCurrentTime(duration);
-  };
+  const onEnd = () => setCurrentTime(duration);
 
   useEffect(() => {
     const Animation = () => {
@@ -105,8 +101,8 @@ const VideoPlayerScreen = ({videoURL, videoThumb, videoRef, colors}: VideoPlayer
         </View>
         <Image source={{uri: videoThumb}} resizeMode="contain" blurRadius={2} style={[Styles.positionAbsolute, Styles.zIndexMinus1, Styles.top0, Styles.bottom0, Styles.left0, Styles.right0]} />
         <Video onEnd={onEnd} onLoad={onLoad} onLoadStart={onLoadStart} posterResizeMode={'contain'} poster={videoThumb} repeat={true} onProgress={onProgress} paused={paused} ref={videoRef} resizeMode={'contain'} source={{uri: videoURL}} style={[Styles.width100per, Styles.height100per]} />
-        <View style={[Styles.height2, Styles.width100per, Styles.positionAbsolute, Styles.flexJustifyStart, {bottom: 68, zIndex: 2}]}>
-          <Slider animateTransitions={true} step={0.01} minimumValue={0} maximumValue={duration} thumbTouchSize={{width: 24, height: 24}} thumbStyle={{width: 14, height: 14}} minimumTrackTintColor={colors.primary} thumbTintColor={colors.primary} maximumTrackTintColor="#828282" value={currentTime} onValueChange={onSeek} trackStyle={[Styles.height2]} />
+        <View style={[Styles.height2, Styles.width100per, Styles.positionAbsolute, Styles.flexJustifyStart, {bottom: 74, zIndex: 2}]}>
+          <Slider animateTransitions={true} step={0.01} minimumValue={0} maximumValue={duration} thumbTouchSize={{width: 24, height: 24}} thumbStyle={{width: 14, height: 14}} minimumTrackTintColor={colors.primary} thumbTintColor={colors.primary} maximumTrackTintColor="#828282" value={currentTime} onSlidingComplete={onSeek} trackStyle={[Styles.height2]} />
         </View>
       </View>
     </TouchableNativeFeedback>
