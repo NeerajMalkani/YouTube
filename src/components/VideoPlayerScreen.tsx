@@ -3,46 +3,59 @@ import {View, Image, TouchableNativeFeedback} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Video from 'react-native-video';
 import {Styles} from '../styles/Styles';
-import Slider from 'react-native-slider';
 import {Text} from 'react-native-paper';
 
 interface VideoPlayerProps {
+  vpIndex: number;
   videoURL: string;
   videoThumb: string;
   videoRef: any;
   colors: any;
+  index: number;
+  setVideoCurrentTime: any;
+  setMaxTime: any;
+  currentPlayerRef: any;
 }
 
-const VideoPlayerScreen = ({videoURL, videoThumb, videoRef, colors}: VideoPlayerProps) => {
+const VideoPlayerScreen = ({vpIndex, videoURL, videoThumb, videoRef, colors, index, setVideoCurrentTime, setMaxTime, currentPlayerRef}: VideoPlayerProps) => {
   // The video we will play on the player.
-  const [duration, setDuration] = useState(0);
-  const [paused, setPaused] = useState(false);
-
-  const [currentTime, setCurrentTime] = useState(0);
+  const [paused, setPaused] = useState(vpIndex !== index);
   const [isLoading, setIsLoading] = useState(true);
 
   const viewAnimation = useRef<Animatable.View & View>(null);
 
-  const onSeek = (seek: number) => {
-    videoRef.current?.seek(seek);
-  };
-
   const onPaused = () => setPaused(!paused);
 
   const onProgress = (data: any) => {
-    if (!isLoading) {
-      setCurrentTime(data.currentTime + 1);
+    if (!isLoading && setVideoCurrentTime) {
+      setVideoCurrentTime[1](data.currentTime + 1);
     }
   };
 
   const onLoad = (data: any) => {
-    setDuration(Math.round(data.duration));
+    if (vpIndex === index) {
+      setMaxTime[1](Math.round(data.duration));
+    }
     setIsLoading(false);
   };
 
   const onLoadStart = () => setIsLoading(true);
 
-  const onEnd = () => setCurrentTime(duration);
+  const onEnd = () => {
+    if (setVideoCurrentTime) {
+      setVideoCurrentTime[1](setMaxTime[0]);
+    }
+  };
+
+  useEffect(() => {
+    if (vpIndex === index) {
+      currentPlayerRef[1](videoRef);
+    }
+  }, [currentPlayerRef, videoRef, vpIndex, index]);
+
+  useEffect(() => {
+    setPaused(vpIndex !== index);
+  }, [vpIndex, index]);
 
   useEffect(() => {
     const Animation = () => {
@@ -73,10 +86,10 @@ const VideoPlayerScreen = ({videoURL, videoThumb, videoRef, colors}: VideoPlayer
   return (
     <TouchableNativeFeedback onPress={onPaused}>
       <View style={[Styles.flex1, Styles.width100per, Styles.flexJustifyCenter]}>
-        <Animatable.View ref={viewAnimation} style={[Styles.width64, Styles.height64, Styles.borderRadius32, Styles.positionAbsolute, Styles.flexAlignCenter, Styles.flexAlignSelfCenter, Styles.flexJustifyCenter, Styles.zIndex2, {backgroundColor: 'rgba(0, 0, 0, 0.5)'}]}>
+        <Animatable.View ref={viewAnimation} style={[Styles.width64, Styles.height64, Styles.borderRadius32, Styles.positionAbsolute, Styles.flexAlignCenter, Styles.flexAlignSelfCenter, Styles.flexJustifyCenter, Styles.zIndex2, Styles.backgroundWithOpacity]}>
           <Image source={!paused ? require('../../assets/play.png') : require('../../assets/pause.png')} style={[Styles.width20, Styles.height20]} />
         </Animatable.View>
-        <View style={[Styles.positionAbsolute, Styles.width48, Styles.flexAlignCenter, Styles.flexJustifyCenter, Styles.zIndex1, Styles.right16, {bottom: 72}]}>
+        <View style={[Styles.positionAbsolute, Styles.width48, Styles.flexAlignCenter, Styles.flexJustifyCenter, Styles.zIndex1, Styles.right16, Styles.bottom72]}>
           <Image source={require('../../assets/like.png')} style={[Styles.width36, Styles.height36, Styles.marginStart8]} />
           <Text variant="bodySmall" style={[Styles.marginTop0, Styles.textShadow, {color: colors.onTertiary}]}>
             Like
@@ -101,9 +114,9 @@ const VideoPlayerScreen = ({videoURL, videoThumb, videoRef, colors}: VideoPlayer
         </View>
         <Image source={{uri: videoThumb}} resizeMode="contain" blurRadius={2} style={[Styles.positionAbsolute, Styles.zIndexMinus1, Styles.top0, Styles.bottom0, Styles.left0, Styles.right0]} />
         <Video onEnd={onEnd} onLoad={onLoad} onLoadStart={onLoadStart} posterResizeMode={'contain'} poster={videoThumb} repeat={true} onProgress={onProgress} paused={paused} ref={videoRef} resizeMode={'contain'} source={{uri: videoURL}} style={[Styles.width100per, Styles.height100per]} />
-        <View style={[Styles.height2, Styles.width100per, Styles.positionAbsolute, Styles.flexJustifyStart, {bottom: 74, zIndex: 2}]}>
-          <Slider animateTransitions={true} step={0.01} minimumValue={0} maximumValue={duration} thumbTouchSize={{width: 24, height: 24}} thumbStyle={{width: 14, height: 14}} minimumTrackTintColor={colors.primary} thumbTintColor={colors.primary} maximumTrackTintColor="#828282" value={currentTime} onSlidingComplete={onSeek} trackStyle={[Styles.height2]} />
-        </View>
+        {/* <View style={[Styles.height2, Styles.width100per, Styles.positionAbsolute, Styles.flexJustifyStart, Styles.bottom74]}>
+          <Slider animateTransitions={true} step={0.01} minimumValue={0} maximumValue={duration} minimumTrackTintColor={colors.primary} thumbTintColor={colors.primary} maximumTrackTintColor="#828282" value={currentTime} onSlidingComplete={onSeek} trackStyle={[Styles.height2]} />
+        </View> */}
       </View>
     </TouchableNativeFeedback>
   );

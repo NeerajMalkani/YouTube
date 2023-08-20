@@ -765,6 +765,9 @@ export const Styles = StyleSheet.create({
   width104: {
     width: 104,
   },
+  width120: {
+    width: 120,
+  },
   width192: {
     width: 192,
   },
@@ -1021,8 +1024,14 @@ export const Styles = StyleSheet.create({
   bottom64: {
     bottom: 64,
   },
+  bottom69: {
+    bottom: 69,
+  },
   bottom72: {
     bottom: 72,
+  },
+  bottom74: {
+    bottom: 74,
   },
   bottom88: {
     bottom: 88,
@@ -1054,5 +1063,9 @@ export const Styles = StyleSheet.create({
     textShadowColor: 'rgba(0, 0, 0, 0.90)',
     textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 10,
+  },
+
+  backgroundWithOpacity: {
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
   },
 });
