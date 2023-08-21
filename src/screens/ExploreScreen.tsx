@@ -1,7 +1,7 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useCallback} from 'react';
 import {View, StatusBar, Image} from 'react-native';
 import {Text, withTheme} from 'react-native-paper';
-import {createNavigationContainerRef} from '@react-navigation/native';
+import {createNavigationContainerRef, useFocusEffect} from '@react-navigation/native';
 import Swiper from 'react-native-swiper';
 import {Styles} from '../styles/Styles';
 import {StackProps} from '../models/StackProps';
@@ -13,6 +13,7 @@ export const navigationRef = createNavigationContainerRef();
 const ExploreScreen = ({theme, route}: StackProps) => {
   const colors: any = theme.colors;
   const [index, setIndex] = useState<number>(0);
+
   const arrVideos: VideoObj[] = [
     {
       description: "Big Buck Bunny tells the story of a giant rabbit with a heart bigger than himself. When one sunny day three rodents rudely harass him, something snaps... and the rabbit ain't no bunny anymore! In the typical cartoon tradition he prepares the nasty rodents a comical revenge.\n\nLicensed under the Creative Commons Attribution license\nhttp://www.bigbuckbunny.org",
@@ -39,6 +40,8 @@ const ExploreScreen = ({theme, route}: StackProps) => {
       ref: useRef<any>(),
     },
   ];
+
+  console.log('My params:', route.params.isSliding);
 
   const swiperIndexChanged = (ind: number) => {
     setIndex(ind);

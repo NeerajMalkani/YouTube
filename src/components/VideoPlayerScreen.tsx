@@ -20,7 +20,7 @@ interface VideoPlayerProps {
 const VideoPlayerScreen = ({vpIndex, videoURL, videoThumb, videoRef, colors, index, setVideoCurrentTime, setMaxTime, currentPlayerRef}: VideoPlayerProps) => {
   // The video we will play on the player.
   const [paused, setPaused] = useState(vpIndex !== index);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const viewAnimation = useRef<Animatable.View & View>(null);
 
@@ -114,9 +114,6 @@ const VideoPlayerScreen = ({vpIndex, videoURL, videoThumb, videoRef, colors, ind
         </View>
         <Image source={{uri: videoThumb}} resizeMode="contain" blurRadius={2} style={[Styles.positionAbsolute, Styles.zIndexMinus1, Styles.top0, Styles.bottom0, Styles.left0, Styles.right0]} />
         <Video onEnd={onEnd} onLoad={onLoad} onLoadStart={onLoadStart} posterResizeMode={'contain'} poster={videoThumb} repeat={true} onProgress={onProgress} paused={paused} ref={videoRef} resizeMode={'contain'} source={{uri: videoURL}} style={[Styles.width100per, Styles.height100per]} />
-        {/* <View style={[Styles.height2, Styles.width100per, Styles.positionAbsolute, Styles.flexJustifyStart, Styles.bottom74]}>
-          <Slider animateTransitions={true} step={0.01} minimumValue={0} maximumValue={duration} minimumTrackTintColor={colors.primary} thumbTintColor={colors.primary} maximumTrackTintColor="#828282" value={currentTime} onSlidingComplete={onSeek} trackStyle={[Styles.height2]} />
-        </View> */}
       </View>
     </TouchableNativeFeedback>
   );
