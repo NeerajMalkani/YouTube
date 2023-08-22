@@ -6,10 +6,10 @@ import {PaperProvider, Text} from 'react-native-paper';
 import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import Slider from 'react-native-slider';
 import {darkTheme, lightTheme} from './src/theme/AppTheme';
 import ExploreScreen, {navigationRef} from './src/screens/ExploreScreen';
 import {Styles} from './src/styles/Styles';
+import {Slider} from '@miblanchard/react-native-slider';
 
 const Tab = createBottomTabNavigator();
 
@@ -44,9 +44,9 @@ export default function App() {
     }
   };
 
-  let onSeek = (seek: number) => {
+  let onSeek = (seek: number[]) => {
     isSeekSliding = false;
-    currentPlayerRef[0].current?.seek(seek);
+    currentPlayerRef[0].current?.seek(seek[0]);
     setSliderThumbWidth(12);
     setSliderThumbHeight(12);
   };
@@ -89,7 +89,7 @@ export default function App() {
           thumbTintColor={lightTheme.colors.primary}
           maximumTrackTintColor="#828282"
           value={setVideoCurrentTime[0]}
-          trackStyle={[Styles.height2]}
+          trackStyle={{ height: 2}}
           onSlidingComplete={onSeek}
           onSlidingStart={onSlidingStart}
         />

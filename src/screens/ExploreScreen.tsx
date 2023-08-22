@@ -1,5 +1,5 @@
 import React, {useState, useRef, useCallback} from 'react';
-import {View, StatusBar, Image} from 'react-native';
+import {View, StatusBar, Image, LogBox} from 'react-native';
 import {Text, withTheme} from 'react-native-paper';
 import {createNavigationContainerRef, useFocusEffect} from '@react-navigation/native';
 import Swiper from 'react-native-swiper';
@@ -11,6 +11,9 @@ import VideoPlayerScreen from '../components/VideoPlayerScreen';
 
 export const navigationRef = createNavigationContainerRef();
 const ExploreScreen = ({theme, route}: StackProps) => {
+  LogBox.ignoreLogs([
+    'Non-serializable values were found in the navigation state',
+  ]);
   const colors: any = theme.colors;
   const [index, setIndex] = useState<number>(0);
   const arrVideos: VideoObj[] = [
@@ -39,7 +42,7 @@ const ExploreScreen = ({theme, route}: StackProps) => {
       ref: useRef<any>(),
     },
   ];
-
+  
   const swiperIndexChanged = (ind: number) => {
     setIndex(ind);
   };

@@ -1021,6 +1021,9 @@ export const Styles = StyleSheet.create({
   right16: {
     right: 16,
   },
+  bottom56: {
+    bottom: 56,
+  },
   bottom64: {
     bottom: 64,
   },
