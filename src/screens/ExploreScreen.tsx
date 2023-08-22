@@ -13,7 +13,6 @@ export const navigationRef = createNavigationContainerRef();
 const ExploreScreen = ({theme, route}: StackProps) => {
   const colors: any = theme.colors;
   const [index, setIndex] = useState<number>(0);
-
   const arrVideos: VideoObj[] = [
     {
       description: "Big Buck Bunny tells the story of a giant rabbit with a heart bigger than himself. When one sunny day three rodents rudely harass him, something snaps... and the rabbit ain't no bunny anymore! In the typical cartoon tradition he prepares the nasty rodents a comical revenge.\n\nLicensed under the Creative Commons Attribution license\nhttp://www.bigbuckbunny.org",
@@ -41,8 +40,6 @@ const ExploreScreen = ({theme, route}: StackProps) => {
     },
   ];
 
-  console.log('My params:', route.params.isSliding);
-
   const swiperIndexChanged = (ind: number) => {
     setIndex(ind);
   };
@@ -54,7 +51,7 @@ const ExploreScreen = ({theme, route}: StackProps) => {
         {arrVideos.map((k: VideoObj, i: number) => {
           return (
             <View key={i} style={[Styles.flex1, Styles.flexAlignCenter, Styles.flexJustifyCenter]}>
-              <VideoPlayerScreen vpIndex={i} videoURL={k.sources[0]} videoThumb={k.thumb} videoRef={k.ref} colors={colors} index={index} setVideoCurrentTime={route.params.setVideoCurrentTime} setMaxTime={route.params.setMaxTime} currentPlayerRef={route.params.currentPlayerRef} />
+              <VideoPlayerScreen vpIndex={i} videoURL={k.sources[0]} videoThumb={k.thumb} videoRef={k.ref} colors={colors} index={index} setVideoCurrentTime={route.params.setVideoCurrentTime} setMaxTime={route.params.setMaxTime} currentPlayerRef={route.params.currentPlayerRef} onProgressFunc={route.params.onProgressFun}/>
               <View style={[Styles.positionAbsolute, Styles.bottom64, Styles.left0, Styles.padding16]}>
                 <View style={[Styles.flexRow, Styles.flexAlignCenter]}>
                   <Image source={{uri: k.thumb}} style={[Styles.width32, Styles.height32, Styles.borderRadius8]} />

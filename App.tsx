@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useState} from 'react';
 import {Image, SafeAreaView, useColorScheme, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -30,7 +30,6 @@ const LibraryIcon = () => {
 };
 
 let isSeekSliding = false;
-
 export default function App() {
   const isDarkMode = useColorScheme() === 'dark';
   const setVideoCurrentTime = useState<number>(0);
@@ -38,24 +37,25 @@ export default function App() {
   const currentPlayerRef = useState<any>();
   const [sliderThumbWidth, setSliderThumbWidth] = useState<number>(12);
   const [sliderThumbHeight, setSliderThumbHeight] = useState<number>(12);
-  const [isSliding, setIsSliding] = useState<boolean>(isSeekSliding);
-  
 
-  const onSeek = (seek: number) => {
-    currentPlayerRef[0].current?.seek(seek);
+  const onProgressFunc = (data: any) => {
+    if (!isSeekSliding) {
+      setVideoCurrentTime[1](data.currentTime + 1);
+    }
+  };
+
+  let onSeek = (seek: number) => {
     isSeekSliding = false;
-    setIsSliding(isSeekSliding);
+    currentPlayerRef[0].current?.seek(seek);
     setSliderThumbWidth(12);
     setSliderThumbHeight(12);
   };
 
-  const onSlidingStart = useCallback(() => {
-    console.log("here");
+  let onSlidingStart = () => {
     isSeekSliding = true;
-    setIsSliding(isSeekSliding);
     setSliderThumbWidth(18);
     setSliderThumbHeight(18);
-  }, []);
+  };
 
   const NoScreen = () => null;
 
@@ -94,24 +94,24 @@ export default function App() {
           onSlidingStart={onSlidingStart}
         />
       </View>
-        <PaperProvider theme={isDarkMode ? darkTheme : lightTheme}>
-          <NavigationContainer ref={navigationRef}>
-            <Tab.Navigator
-              initialRouteName="ExploreScreen"
-              backBehavior="history"
-              screenOptions={{
-                tabBarStyle: {backgroundColor: 'black', position: 'absolute', height: 56, paddingBottom: 8},
-                tabBarInactiveTintColor: lightTheme.colors.onPrimary,
-                tabBarActiveTintColor: lightTheme.colors.onPrimary,
-              }}>
-              <Tab.Screen name="Home" component={NoScreen} options={{headerShown: false, tabBarLabel: 'Home', tabBarIcon: HomeIcon}} listeners={TabListener} />
-              <Tab.Screen name="ExploreScreen" component={ExploreScreen} initialParams={{setVideoCurrentTime: setVideoCurrentTime, setMaxTime: setMaxTime, currentPlayerRef: currentPlayerRef, isSliding: isSliding}} options={{headerShown: false, tabBarLabel: 'Shorts', tabBarIcon: ShortsIcon}} />
-              <Tab.Screen name="Plus" component={NoScreen} options={{headerShown: false, tabBarLabel: '', tabBarLabelPosition: 'beside-icon', tabBarIcon: PlusIcon}} listeners={TabListener} />
-              <Tab.Screen name="Subscription" component={NoScreen} options={{headerShown: false, tabBarLabel: 'Subscription', tabBarIcon: SubscriptionIcon}} listeners={TabListener} />
-              <Tab.Screen name="Library" component={NoScreen} options={{headerShown: false, tabBarLabel: 'Library', tabBarIcon: LibraryIcon}} listeners={TabListener} />
-            </Tab.Navigator>
-          </NavigationContainer>
-        </PaperProvider>
+      <PaperProvider theme={isDarkMode ? darkTheme : lightTheme}>
+        <NavigationContainer ref={navigationRef}>
+          <Tab.Navigator
+            initialRouteName="ExploreScreen"
+            backBehavior="history"
+            screenOptions={{
+              tabBarStyle: {backgroundColor: 'black', position: 'absolute', height: 56, paddingBottom: 8},
+              tabBarInactiveTintColor: lightTheme.colors.onPrimary,
+              tabBarActiveTintColor: lightTheme.colors.onPrimary,
+            }}>
+            <Tab.Screen name="Home" component={NoScreen} options={{headerShown: false, tabBarLabel: 'Home', tabBarIcon: HomeIcon}} listeners={TabListener} />
+            <Tab.Screen name="ExploreScreen" component={ExploreScreen} initialParams={{setVideoCurrentTime: setVideoCurrentTime, setMaxTime: setMaxTime, currentPlayerRef: currentPlayerRef, onProgressFun: onProgressFunc}} options={{headerShown: false, tabBarLabel: 'Shorts', tabBarIcon: ShortsIcon}} />
+            <Tab.Screen name="Plus" component={NoScreen} options={{headerShown: false, tabBarLabel: '', tabBarLabelPosition: 'beside-icon', tabBarIcon: PlusIcon}} listeners={TabListener} />
+            <Tab.Screen name="Subscription" component={NoScreen} options={{headerShown: false, tabBarLabel: 'Subscription', tabBarIcon: SubscriptionIcon}} listeners={TabListener} />
+            <Tab.Screen name="Library" component={NoScreen} options={{headerShown: false, tabBarLabel: 'Library', tabBarIcon: LibraryIcon}} listeners={TabListener} />
+          </Tab.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
     </SafeAreaView>
   );
 }

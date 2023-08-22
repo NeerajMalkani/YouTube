@@ -15,9 +15,10 @@ interface VideoPlayerProps {
   setVideoCurrentTime: any;
   setMaxTime: any;
   currentPlayerRef: any;
+  onProgressFunc: any;
 }
 
-const VideoPlayerScreen = ({vpIndex, videoURL, videoThumb, videoRef, colors, index, setVideoCurrentTime, setMaxTime, currentPlayerRef}: VideoPlayerProps) => {
+const VideoPlayerScreen = ({vpIndex, videoURL, videoThumb, videoRef, colors, index, setVideoCurrentTime, setMaxTime, currentPlayerRef, onProgressFunc}: VideoPlayerProps) => {
   // The video we will play on the player.
   const [paused, setPaused] = useState(vpIndex !== index);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -27,8 +28,8 @@ const VideoPlayerScreen = ({vpIndex, videoURL, videoThumb, videoRef, colors, ind
   const onPaused = () => setPaused(!paused);
 
   const onProgress = (data: any) => {
-    if (!isLoading && setVideoCurrentTime) {
-      setVideoCurrentTime[1](data.currentTime + 1);
+    if (!isLoading) {
+      onProgressFunc(data);
     }
   };
 
